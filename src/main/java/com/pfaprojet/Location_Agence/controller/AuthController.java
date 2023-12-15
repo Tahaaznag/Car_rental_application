@@ -34,6 +34,7 @@ public class AuthController {
     private final UserService userService;
     private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
+    //projetPFA
     @PostMapping("/signup")
     public ResponseEntity<?> signupCustomer(@RequestBody SignupRequest signupRequest){
         if(authService.hasCustomerWithEmail(signupRequest.getEmail()))
