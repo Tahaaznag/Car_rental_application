@@ -1,6 +1,8 @@
 package com.pfaprojet.Location_Agence.controller;
 
+import com.pfaprojet.Location_Agence.dto.BookACarDto;
 import com.pfaprojet.Location_Agence.dto.CarDto;
+import com.pfaprojet.Location_Agence.dto.SearchCarDto;
 import com.pfaprojet.Location_Agence.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.List;
 
 import static org.aspectj.apache.bcel.Repository.instanceOf;
 
@@ -52,5 +55,19 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
+    }
+    @GetMapping("/car/bookings")
+    public ResponseEntity<List<BookACarDto>> getBookings(){
+        return ResponseEntity.ok(adminService.getBookings());
+    }
+    @GetMapping("/car/booking/{bookingId}/{status}")
+    public ResponseEntity<?>changeBookingStatus(@PathVariable Long bookingId,@PathVariable String status){
+        boolean success=adminService.changeBookingStatus(bookingId,status);
+        if(success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/car/search")
+    public ResponseEntity<?> searchCar(@RequestBody SearchCarDto searchCarDto){
+        return ResponseEntity.ok(adminService.searchCar(searchCarDto));
     }
 }

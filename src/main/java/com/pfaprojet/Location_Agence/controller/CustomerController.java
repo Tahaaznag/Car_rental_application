@@ -2,6 +2,7 @@ package com.pfaprojet.Location_Agence.controller;
 
 import com.pfaprojet.Location_Agence.dto.BookACarDto;
 import com.pfaprojet.Location_Agence.dto.CarDto;
+import com.pfaprojet.Location_Agence.dto.SearchCarDto;
 import com.pfaprojet.Location_Agence.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:4200/")
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
 public class CustomerController {
@@ -20,7 +22,7 @@ public class CustomerController {
         List<CarDto> carDtoList=customerService.getAllCars();
         return ResponseEntity.ok(carDtoList);
     }
-    @PostMapping("/car/book")
+    @PostMapping("/cars/book")
     public ResponseEntity<Void> bookACar(@RequestBody BookACarDto bookACarDto){
         boolean success=customerService.bookACar(bookACarDto);
         if(success) return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -32,4 +34,13 @@ public class CustomerController {
         if(carDto==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(carDto);
     }
+    @GetMapping("/car/bookings/{userId}")
+    public ResponseEntity<List<BookACarDto>> getBookingsByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
+    }
+    @PostMapping("/car/search")
+    public ResponseEntity<?> searchCar(@RequestBody SearchCarDto searchCarDto){
+        return ResponseEntity.ok(customerService.searchCar(searchCarDto));
+    }
 }
+
